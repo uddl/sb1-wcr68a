@@ -6,6 +6,7 @@ import axios from 'axios';
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -19,9 +20,9 @@ const Login: React.FC = () => {
       navigate(response.data.role === 'publisher' ? '/publisher' : '/user');
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || 'An error occurred during login');
+        setError(error.response?.data?.message || 'An error occurred during login. Please check your credentials and try again.');
       } else {
-        setError('An unexpected error occurred');
+        setError('An unexpected error occurred. Please try again later.');
       }
     }
   };
@@ -54,6 +55,20 @@ const Login: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+            </div>
+            <div className="mt-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                <span className="ml-2">Remember Me</span>
+              </label>
+            </div>
+            <div className="mt-4">
+              <a href="/forgot-password" className="text-blue-600 hover:underline">Forgot Password?</a>
             </div>
             <div className="flex items-baseline justify-between">
               <button className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">Login</button>
